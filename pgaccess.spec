@@ -76,7 +76,7 @@ Icon=%{name}
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=DATABASE;X-MandrivaLinux-MoreApplications-Databases
+Categories=DATABASE;X-MandrivaLinux-MoreApplications-Databases;
 EOF
 
 install -D -m644 %{SOURCE20} $RPM_BUILD_ROOT%{_miconsdir}/pgaccess.png
