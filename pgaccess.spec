@@ -14,7 +14,6 @@ Source22: pgaccess-48.png
 License: GPL
 Group: Databases
 Url: http://pgfoundry.org/projects/pgaccess/
-BuildRoot: %{_tmppath}/%{name}-buildroot
 Requires: tk >= 8.0
 Requires: tcl >= 8.0
 Requires: tcl-tcllib
