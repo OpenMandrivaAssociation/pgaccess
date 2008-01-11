@@ -38,7 +38,6 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_bindir}
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/%name
 mkdir -p $RPM_BUILD_ROOT{%{_miconsdir},%{_iconsdir},%{_liconsdir}}
-mkdir -p $RPM_BUILD_ROOT%_menudir
 
 perl -pi -e 's|/usr/local|%{_datadir}|' pgaccess
 
@@ -54,17 +53,6 @@ EOF
 cp -vfr * $RPM_BUILD_ROOT%{_datadir}/%name
 rm -fr $RPM_BUILD_ROOT%{_datadir}/%name/doc
 
-mkdir -p $RPM_BUILD_ROOT%{_menudir}
-cat <<EOF >$RPM_BUILD_ROOT%{_menudir}/%name
-?package(%name):\
-needs="x11"\
-section="More Applications/Databases"\
-longtitle="PostgreSQL Tcl/Tk front-end"\
-title="PostgreSQL Access"\
-icon="pgaccess.png"\
-command="pgaccess" \
-xdg="true"
-EOF
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
@@ -98,7 +86,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/%name
 %dir %{_datadir}/%name
 %{_datadir}/%name/*
-%_menudir/%name
 %{_datadir}/applications/mandriva-%{name}.desktop
 %_miconsdir/%name.png
 %_iconsdir/%name.png
