@@ -71,11 +71,15 @@ install -D -m644 %{SOURCE20} $RPM_BUILD_ROOT%{_miconsdir}/pgaccess.png
 install -D -m644 %{SOURCE21} $RPM_BUILD_ROOT%{_iconsdir}/pgaccess.png
 install -D -m644 %{SOURCE22} $RPM_BUILD_ROOT%{_liconsdir}/pgaccess.png
 
+%if %mdkversion < 200900
 %post
 %{update_menus}
+%endif
 
+%if %mdkversion < 200900
 %postun
 %{clean_menus}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
