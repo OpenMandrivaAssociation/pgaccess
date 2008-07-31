@@ -1,7 +1,7 @@
 %define name pgaccess
 %define srcver 0_99_0_20040219
 %define version %( echo %srcver | sed 's/_/./g')
-%define release %mkrel 6
+%define release %mkrel 7
 
 Summary: A tcl/tk client for postgresql
 Name: %{name}
