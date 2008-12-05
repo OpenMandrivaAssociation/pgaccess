@@ -11,6 +11,8 @@ License:	GPL
 Group:		Databases
 URL:		http://pgfoundry.org/projects/pgaccess/
 BuildRoot:	%{_tmppath}/%{name}-buildroot
+# For the macros
+BuildRequires:	tcl-devel
 Requires:	tk >= 8.0
 Requires:	tcl >= 8.0
 Requires:	tcl-tcllib
