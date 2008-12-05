@@ -1,61 +1,51 @@
-%define name pgaccess
-%define srcver 0_99_0_20040219
-%define version %( echo %srcver | sed 's/_/./g')
-%define release %mkrel 7
-
-Summary: A tcl/tk client for postgresql
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Source0: %{name}-%{srcver}.tar.bz2
-Source20: pgaccess-16.png
-Source21: pgaccess-32.png
-Source22: pgaccess-48.png
-License: GPL
-Group: Databases
-Url: http://pgfoundry.org/projects/pgaccess/
-BuildRoot: %{_tmppath}/%{name}-buildroot
-Requires: tk >= 8.0
-Requires: tcl >= 8.0
-Requires: tcl-tcllib
-BuildArch: noarch
+Summary:	A Tcl/Tk client for postgresql
+Name:		pgaccess
+# Just a CVS snapshot, versioning is historical
+Version:	0.99.0.20081028
+Release:	%{mkrel 8}
+Source0:	%{name}-%{version}.tar.lzma
+Source20:	pgaccess-16.png
+Source21:	pgaccess-32.png
+Source22:	pgaccess-48.png
+License:	GPL
+Group:		Databases
+URL:		http://pgfoundry.org/projects/pgaccess/
+BuildRoot:	%{_tmppath}/%{name}-buildroot
+Requires:	tk >= 8.0
+Requires:	tcl >= 8.0
+Requires:	tcl-tcllib
+BuildArch:	noarch
 
 %description
-A free graphical database management tool for PostgreSQL.
-PgAccess has been written by Constantin Teodorescu using Visual Tcl, 
-the best tool for developing Tcl/Tk applications I've ever seen.
+Graphical database management tool for PostgreSQL.
 
 %prep
-%setup -q -n %{name}-%{srcver}
-
-rm -fr win32
+%setup -q -n %{name}
+sed -i -e 's,list frame none underline,list dotbox none underline,g' lib/widgets/tablelist3.8/scripts/tablelistWidget.tcl
+rm -rf op_sys
 
 %build
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/%name
-mkdir -p $RPM_BUILD_ROOT{%{_miconsdir},%{_iconsdir},%{_liconsdir}}
+mkdir -p %{buildroot}%{_bindir}
+mkdir -p %{buildroot}%{tcl_sitelib}/%{name}
 
-perl -pi -e 's|/usr/local|%{_datadir}|' pgaccess
+perl -pi -e 's|/usr/local|%{tcl_sitelib}|' pgaccess
 
-cat <<EOF >$RPM_BUILD_ROOT%{_bindir}/pgaccess
+cat <<EOF >%{buildroot}%{_bindir}/pgaccess
 #!/bin/sh
-export PGACCESS_HOME="/usr/share/pgaccess"
+export PGACCESS_HOME="/usr/share/tcl%{tcl_version}/pgaccess"
 
 \$PGACCESS_HOME/pgaccess.tcl $* &
 EOF
 
-#mv pgaccess.tcl $RPM_BUILD_ROOT%{_bindir}/pgaccess
+cp -vfr * %{buildroot}%{tcl_sitelib}/%{name}
+rm -fr %{buildroot}%{tcl_sitelib}/%{name}/doc
 
-cp -vfr * $RPM_BUILD_ROOT%{_datadir}/%name
-rm -fr $RPM_BUILD_ROOT%{_datadir}/%name/doc
-
-
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
+mkdir -p %{buildroot}%{_datadir}/applications
+cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
 Name=PostgreSQL Access
 Comment=PostgreSQL Tcl/Tk front-end
@@ -64,12 +54,13 @@ Icon=%{name}
 Terminal=false
 Type=Application
 StartupNotify=true
-Categories=DATABASE;X-MandrivaLinux-MoreApplications-Databases;
+Categories=Development;Database;
 EOF
 
-install -D -m644 %{SOURCE20} $RPM_BUILD_ROOT%{_miconsdir}/pgaccess.png
-install -D -m644 %{SOURCE21} $RPM_BUILD_ROOT%{_iconsdir}/pgaccess.png
-install -D -m644 %{SOURCE22} $RPM_BUILD_ROOT%{_liconsdir}/pgaccess.png
+mkdir -p %{buildroot}%{_iconsdir}/hicolor/{16x16,32x32,48x48}/apps
+install -D -m644 %{SOURCE20} %{buildroot}%{_iconsdir}/hicolor/16x16/apps/pgaccess.png
+install -D -m644 %{SOURCE21} %{buildroot}%{_iconsdir}/hicolor/32x32/apps/pgaccess.png
+install -D -m644 %{SOURCE22} %{buildroot}%{_iconsdir}/hicolor/48x48/apps/pgaccess.png
 
 %if %mdkversion < 200900
 %post
@@ -82,18 +73,13 @@ install -D -m644 %{SOURCE22} $RPM_BUILD_ROOT%{_liconsdir}/pgaccess.png
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
 %doc doc/ README
-%attr(755,root,root) %{_bindir}/%name
-%dir %{_datadir}/%name
-%{_datadir}/%name/*
+%attr(755,root,root) %{_bindir}/%{name}
+%{tcl_sitelib}/%{name}
 %{_datadir}/applications/mandriva-%{name}.desktop
-%_miconsdir/%name.png
-%_iconsdir/%name.png
-%_liconsdir/%name.png
-
-
+%{_iconsdir}/hicolor/*/apps/pgaccess.png
 
