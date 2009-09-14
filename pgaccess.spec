@@ -2,7 +2,7 @@ Summary:	A Tcl/Tk client for postgresql
 Name:		pgaccess
 # Just a CVS snapshot, versioning is historical
 Version:	0.99.0.20081028
-Release:	%{mkrel 8}
+Release:	%{mkrel 9}
 Source0:	%{name}-%{version}.tar.lzma
 Source20:	pgaccess-16.png
 Source21:	pgaccess-32.png
