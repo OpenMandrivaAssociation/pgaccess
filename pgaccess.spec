@@ -9,7 +9,7 @@ Source21:	pgaccess-32.png
 Source22:	pgaccess-48.png
 License:	GPL
 Group:		Databases
-URL:		http://pgfoundry.org/projects/pgaccess/
+URL:		https://pgfoundry.org/projects/pgaccess/
 BuildRoot:	%{_tmppath}/%{name}-buildroot
 # For the macros
 BuildRequires:	tcl-devel
